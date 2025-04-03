@@ -1,0 +1,9 @@
+<archetype>
+  <id>wojow-etl</id>
+  <sources>
+    <source>src/main/java/main.App.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/AppTest.java</source>
+  </testSources>
+</archetype>
