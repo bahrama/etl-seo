@@ -17,8 +17,10 @@ public class ShortLinkAndSiteMap {
     public static void createShaorAndSite(){
         Statement stmt = getStatement();
         try {
+/*            ResultSet rs = stmt.executeQuery("select pm.pid,c.category_name as cat3,c2.category_name as cat1 from product_mapping pm join category3 c on pm.category_id = c.id join category2 c22 on c.category2_id = c22.id\n" +
+                    "join category1 c2 on c22.category1_id = c2.id where pm.id in (2982,2983,2984,2985,2986,2987,2988);");*/
             ResultSet rs = stmt.executeQuery("select pm.pid,c.category_name as cat3,c2.category_name as cat1 from product_mapping pm join category3 c on pm.category_id = c.id join category2 c22 on c.category2_id = c22.id\n" +
-                    "join category1 c2 on c22.category1_id = c2.id where pm.id in (2982,2983,2984,2985,2986,2987,2988);");
+                    "join category1 c2 on c22.category1_id = c2.id order by pm.id asc;");
             List<SiteMap> siteMaps = new ArrayList<>();
             while (rs.next()) {
                 SiteMap siteMap = new SiteMap();
@@ -27,9 +29,9 @@ public class ShortLinkAndSiteMap {
                 siteMap.setCategory3(rs.getString("cat3"));
                 siteMaps.add(siteMap);
             }
-            File file = new File("C:\\Users\\ali\\Documents\\short-sitemap\\short.txt");
-            File file2 = new File("C:\\Users\\ali\\Documents\\short-sitemap\\sitemap.txt");
-            int counter=878;
+            File file = new File("D:\\sitemap\\short.txt");
+            File file2 = new File("D:\\sitemap\\sitemap.txt");
+            int counter=1;
             for (SiteMap s : siteMaps) {
                 CharSink chs = Files.asCharSink(
                         file, Charsets.UTF_8, FileWriteMode.APPEND);
@@ -37,16 +39,16 @@ public class ShortLinkAndSiteMap {
                         file2, Charsets.UTF_8, FileWriteMode.APPEND);
 
                     chs.write("\n" +
-                            "    location /p/wojow" + counter +"{\n" +
-                            "        return 301 https://wojow.shop/categories/"+s.getCategory1().replace(" & "," and ").replace(" ","-")+"/"+s.getCategory3().replace(" & "," and ").replace(" ","-")+"/"+s.getPid()+";\n" +
+                            "    location /p/cnp" + counter +"{\n" +
+                            "        return 301 https://cngoods.store/product/"+s.getPid()+";\n" +
                             "    }");
                 chs2.write("<url>\n" +
-                        "<loc>https://wojow.shop/categories/"+s.getCategory1().replace(" & "," and ").replace(" ","-")+"/"+s.getCategory3().replace(" & "," and ").replace(" ","-")+"/"+s.getPid()+"</loc>" +"\n" +
+                        "<loc>https://cngoods.store/product/"+s.getPid()+"</loc>" +"\n" +
                         "<lastmod>2025-03-24T18:49:05+00:00</lastmod>\n" +
                         "<priority>0.80</priority>\n" +
                         "</url>\n");
 
-                String sql="update offer_product set short_url ='/p/wojow"+counter+"' where pid='"+s.getPid()+ "';";
+                String sql="update offer_product set short_url ='/p/cnp"+counter+"' where pid='"+s.getPid()+ "';";
                 stmt.executeUpdate(sql);
                 System.out.println("updated");
                 counter++;
